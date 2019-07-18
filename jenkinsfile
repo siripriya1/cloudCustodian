@@ -1,5 +1,6 @@
 #!groovy
 pipeline {
+    agent any
     stages {
 		stage('Code checkout') {
 			steps {
@@ -14,7 +15,7 @@ pipeline {
                 sh 'pip install c7n'
                 sh 'custodian validate custodian.yml'
                 sh 'custodian run --dryrun -s . ec2Stop.yml'
-                
+
             }
         }
     }
