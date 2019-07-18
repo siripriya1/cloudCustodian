@@ -8,7 +8,7 @@ pipeline {
 				checkout scm
             }
         }
-        stage('Code checkout') {
+        stage('dry run') {
 			steps {
                 sh 'virtualenv --python=python2.7 custodian'
                 sh 'source custodian/bin/activate'
