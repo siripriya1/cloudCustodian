@@ -1,15 +1,20 @@
-#!/usr/bin/env groovy
-
-node {
-    deleteDir()
-    checkout scm
-
-    stage('dry run') {	
-    steps {
-        sh 'virtualenv --python=python2.7 custodian'
-        sh 'source custodian/bin/activate'
-        sh 'pip install c7n'
-        sh 'custodian validate custodian.yml'
-        sh 'custodian run --dryrun -s . ec2Stop.yml'
+#!groovy
+pipeline {
+    stages {
+		stage('Code checkout') {
+			steps {
+				deleteDir()
+				checkout scm
+            }
+        }
+        stage('Code checkout') {
+			steps {
+                sh 'virtualenv --python=python2.7 custodian'
+                sh 'source custodian/bin/activate'
+                sh 'pip install c7n'
+                sh 'custodian validate custodian.yml'
+                sh 'custodian run --dryrun -s . ec2Stop.yml'
+            }
+        }
     }
 }
