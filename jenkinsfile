@@ -11,7 +11,7 @@ pipeline {
         stage('dry run') {
 			steps {
                 sh 'sudo su - ec2-user'
-                sh 'source custodian/bin/activate'
+                sh 'source /home/ec2-user/custodian/bin/activate'
                // sh 'virtualenv --python=python2.7 custodian'
               // sh 'source custodian/bin/activate'
                // sh 'pip install c7n'
