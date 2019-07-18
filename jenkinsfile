@@ -10,11 +10,11 @@ pipeline {
         }
         stage('dry run') {
 			steps {
-                sh 'virtualenv --python=python2.7 custodian'
-                sh 'source custodian/bin/activate'
-                sh 'pip install c7n'
-                sh 'custodian validate custodian.yml'
-                sh 'custodian run --dryrun -s . ec2Stop.yml'
+                sh 'sudo virtualenv --python=python2.7 custodian'
+                sh 'sudo source custodian/bin/activate'
+                sh 'sudo pip install c7n'
+                sh 'sudo custodian validate custodian.yml'
+                sh 'sudo custodian run --dryrun -s . ec2Stop.yml'
 
             }
         }
