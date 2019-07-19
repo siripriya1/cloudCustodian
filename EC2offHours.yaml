@@ -5,7 +5,7 @@ policies:
       - type: offhour
         tag: CustodianOffHours
         default_tz: est
-        offhour: 19
+        offhour: 11
       - type: instance-age
         hours: 1
     actions:
@@ -17,7 +17,7 @@ policies:
       - type: onhour
         tag: CustodianOffHours
         default_tz: est
-        onhour: 7
+        onhour: 9
       - type: value
         value: 1
         key: LaunchTime
@@ -25,10 +25,3 @@ policies:
         value_type: age
     actions:
       - start
-
-  - name: stop-instances
-    resource: ec2
-    filters:
-      - "tag:Custodian": present
-    actions:
-      - stop
