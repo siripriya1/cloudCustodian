@@ -26,10 +26,5 @@ policies:
         tag: CustodianOffHours
         default_tz: est
         onhour: 12
-      - type: value
-        value: 1
-        key: LaunchTime
-        op: less-than
-        value_type: age
     actions:
       - start
