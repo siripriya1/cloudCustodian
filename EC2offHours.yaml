@@ -8,7 +8,7 @@ policies:
     filters:
       - type: offhour
         tag: CustodianOffHours
-        default_tz: pt
+        default_tz: est
         offhour: 18
       - type: instance-age
         hours: 1
@@ -24,8 +24,8 @@ policies:
     filters:
       - type: onhour
         tag: CustodianOffHours
-        default_tz: pt
-        onhour: 11
+        default_tz: est
+        onhour: 12
       - type: value
         value: 1
         key: LaunchTime
