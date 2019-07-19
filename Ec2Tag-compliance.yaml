@@ -42,24 +42,24 @@ policies:
       op: stop
 
 - name: stop-marked-Ec2 instances
-    resource: ec2
-    description: |
-      Stop Ec2 instances marked for stopping
-    filters:
-      - type: marked-for-op
-        op: stop
-        days: 1
-    actions:
-      - stop
-      - type: notify
-        template: default.html
-        template_format: 'html'
-        priority_header: '5'
-        subject: 'Ec2 Tag complience: Ec2 instances stopped for missing the mandatory tags.'
-        to:
-          - p.siripriya@gmail.com 
-        owner_absent_contact:
-          - P.siripriya@gmail.com 
-        transport:
-          type: sns
-          topic: arn:aws:sns:us-east-1:579510459337:siri-custodian
+  resource: ec2
+  description: |
+    Stop Ec2 instances marked for stopping
+  filters:
+    - type: marked-for-op
+      op: stop
+      days: 1
+  actions:
+    - stop
+    - type: notify
+      template: default.html
+      template_format: 'html'
+      priority_header: '5'
+      subject: 'Ec2 Tag complience: Ec2 instances stopped for missing the mandatory tags.'
+      to:
+        - p.siripriya@gmail.com 
+      owner_absent_contact:
+        - P.siripriya@gmail.com 
+      transport:
+        type: sns
+        topic: arn:aws:sns:us-east-1:579510459337:siri-custodian
