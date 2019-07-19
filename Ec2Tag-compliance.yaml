@@ -10,9 +10,9 @@ policies:
     Find all (non-ASG) instances that are not conformant
     to tagging policies, and tag them for stoppage in 1 days.
   filters:
+    - "tag:ec2_tag_compliance": absent
+    - "tag:aws:autoscaling:groupName": absent
     - or: 
-       - "tag:aws:autoscaling:groupName": absent
-       - "tag:ec2_tag_compliance": absent
        - "tag:Owner": absent
        - "tag:Account": absent
        - "tag:Project": absent
@@ -42,7 +42,7 @@ policies:
   resource: ec2
   mode:
       type: periodic
-      schedule: rate(5 minutes)
+      schedule: rate(6 minutes)
       role: arn:aws:iam::579510459337:role/SAIC-research-jenkins-BuildRole-15WAXA1ZCR8GU
   comment: |
     Find all (non-ASG) instances that are marked to stop by the
@@ -74,11 +74,16 @@ policies:
         topic: arn:aws:sns:us-east-1:579510459337:siri-custodian
 
 - name: stop-marked-Ec2Instances
+  mode:
+      type: periodic
+      schedule: rate(1 hour)
+      role: arn:aws:iam::579510459337:role/SAIC-research-jenkins-BuildRole-15WAXA1ZCR8GU
   resource: ec2
   description: |
     Stop Ec2 instances marked for stopping
   filters:
     - type: marked-for-op
+      tag: ec2_tag_compliance
       op: stop
   actions:
     - stop
