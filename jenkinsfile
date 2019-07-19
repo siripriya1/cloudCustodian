@@ -14,7 +14,6 @@ pipeline {
                 virtualenv --python=python2.7 custodian
                 source custodian/bin/activate
                 pip install c7n
-                ls -l
                 custodian validate ec2Stop.yaml
                 //custodian run --dryrun -s . --region us-east-1 ec2Stop.yaml
                 custodian run -s . --region us-east-1 ec2Stop.yaml
