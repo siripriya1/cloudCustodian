@@ -1,0 +1,65 @@
+policies:
+
+- name: ec2-tag-compliance-mark
+  resource: ec2
+  mode:
+      type: periodic
+      schedule: rate(5 minutes)
+      role: arn:aws:iam::579510459337:role/SAIC-research-jenkins-BuildRole-15WAXA1ZCR8GU
+  comment: |
+    Find all (non-ASG) instances that are not conformant
+    to tagging policies, and tag them for stoppage in 1 days.
+  filters:
+    - or: 
+       - "tag:aws:autoscaling:groupName": absent
+       - "tag:c7n_status": absent
+       - "tag:Owner": absent
+       - "tag:Account": absent
+       - "tag:Project": absent
+  actions:
+    - type: mark-for-op
+      op: stop
+      days: 1
+
+  - name: ec2-tag-compliance-unmark
+    resource: ec2
+    mode:
+        type: periodic
+        schedule: rate(5 minutes)
+        role: arn:aws:iam::579510459337:role/SAIC-research-jenkins-BuildRole-15WAXA1ZCR8GU
+    comment: |
+      Find all (non-ASG) instances that are marked to stop by the
+      tagging policies, which are compient,un marktag them for stop action.
+    filters:
+      - and: 
+        - "tag:aws:autoscaling:groupName": absent
+        - "tag:c7n_status": present
+        - "tag:Owner": present
+        - "tag:Account": present
+        - "tag:Project": present
+    actions:
+      - type: unmark-for-op
+        op: stop
+
+- name: stop-marked-Ec2 instances
+    resource: ec2
+    description: |
+      Stop Ec2 instances marked for stopping
+    filters:
+      - type: marked-for-op
+        op: stop
+        days: 1
+    actions:
+      - stop
+      - type: notify
+        template: default.html
+        template_format: 'html'
+        priority_header: '5'
+        subject: 'Ec2 Tag complience: Ec2 instances stopped for missing the mandatory tags.'
+        to:
+          - p.siripriya@gmail.com 
+        owner_absent_contact:
+          - P.siripriya@gmail.com 
+        transport:
+          type: sns
+          topic: arn:aws:sns:us-east-1:579510459337:siri-custodian

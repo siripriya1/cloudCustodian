@@ -1,8 +1,12 @@
 policies:
+#     CustodianOffHours should be present for the off hours rule to be applied. 
+#     The instance stop timing can be over ridden by adding the schedule value 
+#               to the Instance tag with key CustodianOffHours.
+#     Example would be CustodianOffHours : off=(M-F,13);on=(M-F,14);tz=est;
   - name: stop-after-hours
     mode:
       type: periodic
-      schedule: rate(5 minutes)
+      schedule: rate(30 minutes)
       role: arn:aws:iam::579510459337:role/SAIC-research-jenkins-BuildRole-15WAXA1ZCR8GU
     resource: ec2
     filters:
@@ -18,7 +22,7 @@ policies:
   - name: start-after-hours
     mode:
       type: periodic
-      schedule: rate(5 minutes)
+      schedule: rate(30 minutes)
       role: arn:aws:iam::579510459337:role/SAIC-research-jenkins-BuildRole-15WAXA1ZCR8GU
     resource: ec2
     filters:

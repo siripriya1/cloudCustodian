@@ -1,16 +1,24 @@
 policies:
   - name: offhour-stop-ASG
+      mode:
+        type: periodic
+        schedule: rate(5 minutes)
+        role: arn:aws:iam::579510459337:role/SAIC-research-jenkins-BuildRole-15WAXA1ZCR8GU
     resource: asg
     comments: |
       Daily stoppage at 10pm
     filters:
       - type: offhour
-        tag: custodian_downtime
+        tag: CustodianOffHours
         offhour: 22
     actions:
       - suspend
 
   - name: onhour-start-ASG
+      mode:
+        type: periodic
+        schedule: rate(5 minutes)
+        role: arn:aws:iam::579510459337:role/SAIC-research-jenkins-BuildRole-15WAXA1ZCR8GU  
     resource: asg
     comments: |
       Daily start at 10am
