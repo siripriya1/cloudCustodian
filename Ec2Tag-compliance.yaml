@@ -73,7 +73,7 @@ policies:
         type: sns
         topic: arn:aws:sns:us-east-1:579510459337:siri-custodian
 
-- name: stop-marked-Ec2 instances
+- name: stop-marked-Ec2Instances
   resource: ec2
   description: |
     Stop Ec2 instances marked for stopping
