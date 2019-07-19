@@ -10,16 +10,13 @@ pipeline {
         }
         stage('dry run') {
 			steps {
-                sh 'whoami'
                 sh 'sudo su'
-                sh 'whoami'
-                sh 'chmod 777 /home/ec2-user/custodian/bin/activate'
-                sh 'source /home/ec2-user/custodian/bin/activate'
-               // sh 'virtualenv --python=python2.7 custodian'
-              // sh 'source custodian/bin/activate'
-               // sh 'pip install c7n'
+                sh 'virtualenv --python=python2.7 custodian'
+                sh 'source custodian/bin/activate'
+                sh 'pip install c7n'
                 sh 'custodian validate ec2Stop.yml'
                 sh 'custodian run --dryrun -s . ec2Stop.yml'
+                sh 'chmod -R 777 /var/lib/jenkins/workspace/custodian'
             }
         }
     }
