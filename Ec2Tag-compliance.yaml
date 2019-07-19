@@ -80,7 +80,6 @@ policies:
   filters:
     - type: marked-for-op
       op: stop
-      days: 1
   actions:
     - stop
     - type: notify
