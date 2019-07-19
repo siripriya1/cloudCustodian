@@ -15,7 +15,6 @@ pipeline {
                 source custodian/bin/activate
                 pip install c7n
                 custodian validate ec2Stop.yaml
-                //custodian run --dryrun -s . --region us-east-1 ec2Stop.yaml
                 custodian run -s . --region us-east-1 ec2Stop.yaml
                 chmod -R 777 /var/lib/jenkins/workspace/custodian'''
             }
