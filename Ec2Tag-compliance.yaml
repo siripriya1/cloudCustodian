@@ -12,14 +12,31 @@ policies:
   filters:
     - or: 
        - "tag:aws:autoscaling:groupName": absent
-       - "tag:c7n_status": absent
+       - "tag:ec2_tag_compliance": absent
        - "tag:Owner": absent
        - "tag:Account": absent
        - "tag:Project": absent
   actions:
     - type: mark-for-op
+      tag: ec2_tag_compliance
       op: stop
       days: 1
+    - type: notify
+      template: default.html
+      template_format: 'html'
+      priority_header: '5'
+      subject: 'Ec2 Tag complience: Ec2 instances stopped for missing the mandatory tags.'
+      violation_desc: "Ec2 Instance have been marked by cloud custodian to be deleted at a day:"
+      action_desc: |
+            Your EBS server will be deleted in 1 day as it now has all the required tags. 
+            Please take necessary action to with in 24 hours.
+      to:
+        - p.siripriya@gmail.com 
+      owner_absent_contact:
+        - P.siripriya@gmail.com 
+      transport:
+        type: sns
+        topic: arn:aws:sns:us-east-1:579510459337:siri-custodian
 
 - name: ec2-tag-compliance-unmark
   resource: ec2
@@ -33,13 +50,28 @@ policies:
   filters:
     - and: 
       - "tag:aws:autoscaling:groupName": absent
-      - "tag:c7n_status": present
+      - "tag:ec2_tag_compliance": present
       - "tag:Owner": present
       - "tag:Account": present
       - "tag:Project": present
   actions:
-    - type: unmark-for-op
-      op: stop
+    - type: unmark
+      tags: ["ec2_tag_compliance"]
+    - type: notify
+      template: default.html
+      template_format: 'html'
+      priority_header: '5'
+      subject: 'Ec2 Tag complience: Ec2 instances stopped for missing the mandatory tags.'
+      violation_desc: "Ec2 instace have been unmark by cloud custodian to be deleted at 30 days:"
+      action_desc: |
+            Your Ec2 instance will not deleted as it now has all the required tags.
+      to:
+        - p.siripriya@gmail.com 
+      owner_absent_contact:
+        - P.siripriya@gmail.com 
+      transport:
+        type: sns
+        topic: arn:aws:sns:us-east-1:579510459337:siri-custodian
 
 - name: stop-marked-Ec2 instances
   resource: ec2
@@ -56,6 +88,9 @@ policies:
       template_format: 'html'
       priority_header: '5'
       subject: 'Ec2 Tag complience: Ec2 instances stopped for missing the mandatory tags.'
+      violation_desc: "Ec2 have been stopped by cloud custodian due to violation of tag compliance policy."
+      action_desc: |
+            Your Ec2 instance has been stopped as it dosen't have all the required tags.
       to:
         - p.siripriya@gmail.com 
       owner_absent_contact:
