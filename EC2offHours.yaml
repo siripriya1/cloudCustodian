@@ -2,7 +2,7 @@ policies:
   - name: stop-after-hours
     mode:
       type: periodic
-      schedule: rate(30 minutes)
+      schedule: rate(5 minutes)
       role: arn:aws:iam::579510459337:role/SAIC-research-jenkins-BuildRole-15WAXA1ZCR8GU
     resource: ec2
     filters:
@@ -18,13 +18,13 @@ policies:
   - name: start-after-hours
     mode:
       type: periodic
-      schedule: rate(30 minute)
+      schedule: rate(5 minutes)
       role: arn:aws:iam::579510459337:role/SAIC-research-jenkins-BuildRole-15WAXA1ZCR8GU
     resource: ec2
     filters:
       - type: onhour
         tag: CustodianOffHours
         default_tz: est
-        onhour: 12
+        onhour: 9
     actions:
       - start
