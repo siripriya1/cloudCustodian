@@ -19,7 +19,7 @@ policies:
   actions:
     - type: mark-for-op
       tag: ec2_tag_compliance
-      op: stop
+      op: delete
       days: 1
     - type: notify
       template: default.html
@@ -84,9 +84,9 @@ policies:
   filters:
     - type: marked-for-op
       tag: ec2_tag_compliance
-      op: stop
+      op: delete
   actions:
-    - stop
+    - delete
     - type: notify
       template: default.html
       template_format: 'html'
