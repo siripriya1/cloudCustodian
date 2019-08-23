@@ -1,0 +1,14 @@
+policies:
+  - name: SG-mark-unattached-deletion
+    resource: ebs
+    comments: |
+      Delete any unattached Security groups.   
+    mode:
+      type: periodic
+      role: arn:aws:iam::{account_id}:role/CloudCustodianRole
+      schedule: "rate(1 day)"
+    filters:
+      - Attachments: []
+      - "tag:maid_status": absent
+    actions:
+      - delete 

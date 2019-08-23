@@ -1,0 +1,34 @@
+policies:
+
+- name: empty-s3-buckets-over-60-days-old-notify
+  resource: s3
+  filters:
+      - type: value
+        value_type: age
+        key: CreationDate
+        value: 60
+        op: greater-than
+      - type: metrics
+        name: NumberOfObjects
+        days: 60
+        value: 0
+        op: eq
+  actions:
+      - delete
+      - type: notify
+        template: default.html
+        comments:  |
+              "S3 Buckets over 60 days old that have had 0 objects in them for the last 60 days."
+        priority_header: 1
+        subject: "S3 - Unused Empty Buckets - [custodian {{ account }} - {{ region }}]"
+        violation_desc: | 
+              "The following S3 buckets have gone unused the last 60 days and are empty.  
+                Please delete these buckets if no longer needed!"
+        action_desc: "Actions Taken: Notifying only.  Cleanup needed"
+        to:
+          - CloudAdmins@YourCompanyHere.com
+          - resource-owner
+        transport:
+            type: sqs
+            queue: https://sqs.us-east-1.amazonaws.com/XXXXXXXXXXXX/cloud-custodian-mailer
+            region: us-east-1
