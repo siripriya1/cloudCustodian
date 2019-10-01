@@ -1,0 +1,31 @@
+policies:
+  - name: stop-rds-dev
+    resource: rds
+    filters:
+      - "tag:environment": dev
+      - "DBInstanceStatus": available
+      - type: offhour
+        tag: offhours
+        offhour: 20
+        default_tz: cet
+        weekends: true
+    actions:
+      - type: mark-for-op
+        tag: "offhours"
+        op: stop
+      - stop
+  - name: start-rds-dev
+    resource: rds
+    filters:
+      - "tag:environment": dev
+      - "DBInstanceStatus": stopped
+      - "tag:offhours": present
+      - type: onhour
+        tag: offhours
+        onhour: 6
+        default_tz: cet
+        weekends: true
+    actions:
+      - start
+      - type: unmark
+        tags: [ "offhours" ]
